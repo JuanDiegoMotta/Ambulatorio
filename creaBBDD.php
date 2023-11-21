@@ -18,6 +18,9 @@ try {
                 -- Query 0: Crear BBDD Ambulatorio
                 CREATE DATABASE Ambulatorio;
 
+                -- Cambio al contexto de la nueva BBDD
+                USE Ambulatorio;
+
                 -- Query 1: Crear tabla Medico
                 CREATE TABLE Medico (
                     id INT AUTO_INCREMENT PRIMARY KEY,
