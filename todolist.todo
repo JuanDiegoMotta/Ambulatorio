@@ -1,0 +1,36 @@
+Servidor:
+☐ Crear "conecta.php" con clase BBDD y método getConexion() que devuelva la conexión al servidor con el contexto de la BBDD 'Ambulatorio'
+☐ Crear las clases "Médico", "Paciente" y "Consulta"
+Creación de tablas:
+    ☐ Crear BBDD 'Ambulatorio' y las tablas correspondientes en un archivo llamado "creaBBDD.php"
+        Consulta:
+            • id_consulta: se irá incrementando automáticamente y no será visible a ningún usuario (PK)
+            • id_médico: FK, se relaciona con el id del médico que realiza la consulta
+            • id_paciente: FK, se relaciona con el id del paciente que realiza la consulta
+            • Fecha_consulta: fecha actual en la que se ha realizado la consulta
+            • Diagnostico: diagnóstico de enfermedad
+            • Sintomatologia: descripción de los síntomas que tiene el paciente
+            • pdf: contendrá la información de la consulta en forma de pdf (puede estar null)
+        Medicamento:
+            • id: PK
+            • Medicamento: Nombre del medicamento
+        Receta:
+            • id_medicamento: FK
+            • id_consulta: FK
+            • Posologia: cantidad/dosis-tiempo. Ejemplo: 1cap/8h-7d; otro ejemplo: 2cap/mañ-2m || 2cap/noc-2m
+            • Fecha_fin: fecha de fin de uso del medicamento
+        Medico:
+            • id: se irá incrementando automáticamente y no será visible a ningún usuario
+            • Nombre: nombre del doctor/a
+            • Apellidos: apellidos del doctor/a
+            • Especialidad: a la cual pertenece el médico (pediatría, dermatología, medicina de familia, neurología...)
+        Paciente:
+            • id: se irá incrementando automáticamente y no será visible a ningún usuario
+            • DNI del paciente (máximo 9 dígitos y una letra, no se debe reservar más espacio)
+            • Nombre: nombre del paciente
+            • Apellidos: apellidos del paciente
+            • Genero: género M = Masculino, F = Femenino, O = Otro
+            • Fecha_nac: Fecha de nacimiento del paciente
+            • id_med: id de los médicos asignados a este paciente. Se tratará como un array y se almacenará como un string en la BD.  
+    ☐ Añadir comentarios de porqué se han creado las tablas así¿?
+    ☐ Insertar al menos 4 datos en cada tabla, se debe simular que un paciente debe haber tenido varias consultas con el mismo médico y tiene medicación antigua¿?
