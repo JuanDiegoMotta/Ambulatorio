@@ -13,61 +13,62 @@ try {
         $result = mysqli_query($conexion, $sql);
 
         // Comprobamos si existe, si no existe creamos la DATABASE con sus tablas.
+        /**
+         * Se crean las tablas teniendo en cuenta la integridad referencial, es decir, cuál debe ser el orden adecuado
+         * para crear las tablas de tal forma que no se cree primero una tabla que referencie a otra. Por otro lado la estructura
+         * de las tablas es la acordada en la presentación del proyecto, con pequeñas modificaciones para hacer los nombres
+         * más representativos y añadiendo el campo "pdf" a la tabla consulta.
+         */
         if (mysqli_num_rows($result) == 0) {
             $sql = "
-                -- Query 0: Crear BBDD Ambulatorio
-                CREATE DATABASE Ambulatorio;
-
-                -- Cambio al contexto de la nueva BBDD
-                USE Ambulatorio;
-
-                -- Query 1: Crear tabla Medico
-                CREATE TABLE Medico (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    Nombre VARCHAR(255),
-                    Apellidos VARCHAR(255),
-                    Especialidad VARCHAR(255)
-                );
+            CREATE DATABASE 'Ambulatorio';
             
-                -- Query 2: Crear tabla Paciente
-                CREATE TABLE Paciente (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    DNI VARCHAR(10) UNIQUE,
-                    Nombre VARCHAR(255),
-                    Apellidos VARCHAR(255),
-                    Genero CHAR(1),
-                    Fecha_nac DATE,
-                    id_med VARCHAR(255)
-                );
+            USE Ambulatorio;
             
-                -- Query 3: Crear tabla Medicamento
-                CREATE TABLE Medicamento (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    Medicamento VARCHAR(255)
-                );
-            
-                -- Query 4: Crear tabla Consulta
-                CREATE TABLE Consulta (
-                    id_consulta INT AUTO_INCREMENT PRIMARY KEY,
-                    id_medico INT,
-                    id_paciente INT,
-                    Fecha_consulta DATE,
-                    Diagnostico VARCHAR(255),
-                    Sintomatologia TEXT,
-                    FOREIGN KEY (id_medico) REFERENCES Medico(id),
-                    FOREIGN KEY (id_paciente) REFERENCES Paciente(id)
-                );
-            
-                -- Query 5: Crear tabla Receta
-                CREATE TABLE Receta (
-                    id_medicamento INT,
-                    id_consulta INT,
-                    Posologia VARCHAR(255),
-                    Fecha_fin DATE,
-                    FOREIGN KEY (id_medicamento) REFERENCES Medicamento(id),
-                    FOREIGN KEY (id_consulta) REFERENCES Consulta(id_consulta)
-                );
-            ";
+            CREATE TABLE MEDICO (
+                id_medico INT PRIMARY KEY,
+                nombre_medico VARCHAR(50),
+                apellidos_medico VARCHAR(50),
+                especialidad VARCHAR(50)
+            );
+        
+            CREATE TABLE PACIENTE (
+                id_paciente INT PRIMARY KEY,
+                dni VARCHAR(15),
+                nombre_paciente VARCHAR(50),
+                apellidos_paciente VARCHAR(50),
+                genero CHAR(1),
+                fecha_nac DATE,
+                id_med VARCHAR(50),
+            );
+        
+            CREATE TABLE MEDICAMENTO (
+                id_medicamento INT PRIMARY KEY,
+                nombre_medicamento VARCHAR(50)
+            );
+        
+            CREATE TABLE CONSULTA (
+                id_consulta INT PRIMARY KEY,
+                id_medico INT,
+                id_paciente INT,
+                fecha_consulta DATE,
+                diagnostico VARCHAR(255),
+                sintomatologia VARCHAR(255),
+                pdf VARCHAR(50),
+                FOREIGN KEY (id_medico) REFERENCES MEDICO(id_medico),
+                FOREIGN KEY (id_paciente) REFERENCES PACIENTE(id_paciente)
+            );
+        
+            CREATE TABLE RECETA (
+                id_receta INT PRIMARY KEY,
+                id_medicamento INT,
+                id_consulta INT,
+                posologia VARCHAR(255),
+                fecha_fin DATE,
+                FOREIGN KEY (id_medicamento) REFERENCES MEDICAMENTO(id_medicamento),
+                FOREIGN KEY (id_consulta) REFERENCES CONSULTA(id_consulta)
+            );
+        ";
             // Ejecutar las consultas
             if (mysqli_multi_query($conexion, $sql)) {
                 echo "Tablas creadas exitosamente.";

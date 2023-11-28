@@ -1,8 +1,8 @@
 Servidor:
-☐ Crear "conecta.php" con clase BBDD y método getConexion() que devuelva la conexión al servidor con el contexto de la BBDD 'Ambulatorio'
-☐ Crear las clases "Médico", "Paciente" y "Consulta"
+✔ Crear "conecta.php" con clase BBDD y método getConexion() que devuelva la conexión al servidor @done (11/28/2023, 9:58:12 AM)
+✔ Crear las clases "Médico", "Paciente" y "Consulta" @done (11/28/2023, 10:40:08 AM)
 Creación de tablas:
-    ☐ Crear BBDD 'Ambulatorio' y las tablas correspondientes en un archivo llamado "creaBBDD.php"
+    ✔ Crear BBDD 'Ambulatorio' y las tablas correspondientes en un archivo llamado "creaBBDD.php" @done (11/28/2023, 11:28:10 AM)
         Consulta:
             • id_consulta: se irá incrementando automáticamente y no será visible a ningún usuario (PK)
             • id_médico: FK, se relaciona con el id del médico que realiza la consulta
@@ -10,7 +10,7 @@ Creación de tablas:
             • Fecha_consulta: fecha actual en la que se ha realizado la consulta
             • Diagnostico: diagnóstico de enfermedad
             • Sintomatologia: descripción de los síntomas que tiene el paciente
-            • pdf: contendrá la información de la consulta en forma de pdf (puede estar null)
+            • pdf: contendrá la información del resmumen de la consulta en forma de pdf (puede estar null)
         Medicamento:
             • id: PK
             • Medicamento: Nombre del medicamento
