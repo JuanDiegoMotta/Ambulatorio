@@ -33,4 +33,4 @@ Creación de tablas:
             • Fecha_nac: Fecha de nacimiento del paciente
             • id_med: id de los médicos asignados a este paciente. Se tratará como un array y se almacenará como un string en la BD.  
     ✔ Añadir comentarios de porqué se han creado las tablas así¿? @done (11/28/2023, 11:38:20 AM)
-    ☐ Insertar al menos 4 datos en cada tabla, se debe simular que un paciente debe haber tenido varias consultas con el mismo médico y tiene medicación antigua¿?
+    ✔ Insertar al menos 4 datos en cada tabla, se debe simular que un paciente debe haber tenido varias consultas con el mismo médico y tiene medicación antigua¿? @done (11/30/2023, 1:03:00 PM)
