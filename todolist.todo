@@ -17,7 +17,7 @@ Creación de tablas:
         Receta:
             • id_medicamento: FK
             • id_consulta: FK
-            • Posologia: cantidad/dosis-tiempo. Ejemplo: 1cap/8h-7d; otro ejemplo: 2cap/mañ-2m || 2cap/noc-2m
+            • Posologia: cantidad/dosistiempo. Ejemplo: 1cap/8h7d; otro ejemplo: 2cap/mañ2m || 2cap/noc2m
             • Fecha_fin: fecha de fin de uso del medicamento
         Medico:
             • id: se irá incrementando automáticamente y no será visible a ningún usuario
@@ -34,3 +34,51 @@ Creación de tablas:
             • id_med: id de los médicos asignados a este paciente. Se tratará como un array y se almacenará como un string en la BD.  
     ✔ Añadir comentarios de porqué se han creado las tablas así¿? @done (11/28/2023, 11:38:20 AM)
     ✔ Insertar al menos 4 datos en cada tabla, se debe simular que un paciente debe haber tenido varias consultas con el mismo médico y tiene medicación antigua¿? @done (11/30/2023, 1:03:00 PM)
+Cliente:
+Se ha aceptado el diseño de un portal web que tenga dos puntos de entrada, uno para los pacientes y otro para los médicos.
+☐ Creación login paciente
+☐ Creación login médico
+Página PACIENTE:
+	☐ Nombre e información del paciente
+	☐ Próximas citas (ID de cita, médico, fecha)
+	☐ Medicación actual > con su posología y cuándo debe dejar de tomarla
+	☐ Un listado de consultas pasadas con sus ID y la fecha que ocurrieron
+		☐ Al seleccionar una consulta (realizacion de select con consultas pasadas)> aparece en pantalla la info asociada
+		a esa consulta (tabla html) y si existe, el pdf.
+	☐ Sección en la que se pueda pedir una cita (solo puede pedir citas con los médicos que le tratan)
+		☐ Select con los médicos que tratan al paciente y su especialidad, para seleccionar al médico. Opción por defecto será el médico de CABECERA o FAMILIA.
+		☐ Calendario para seleccionar la fecha (si la fecha es anterior mostrar mensaje "Fecha no válida") (si la fecha es un finde "Elija un día laborable") (si es para dentro de más de un mes 
+        "Selecciona una fecha que se encuentre entre los próximos 30 días")
+		☐ textarea para indicar sintomatología (opcional)
+		☐ si la fecha es correcta, en esta sección habrá un botón pedir cita para registrar la consulta.
+Página MEDICO:
+	☐ Nombre e información del médico(especialidad)
+	☐ Número de consultas que tiene en los próximos 7 días
+	☐ Consultas de hoy, con el ID de la cita, el paciente, y un pequeño extracto (los primeros 100 caracteres de la sintomología),
+	en caso de que exista.
+	☐ Al seleccionar una consulta
+Página CONSULTA:
+	☐ Info de la consulta no editable (médico, paciente, fecha)
+	Info de la consulta editable:
+		☐ Sintomatología: Textarea con info previa, si existe. El médico puede sobreescribir y añadir más información.
+		☐ Diagnóstico: Textarea
+		Medicación:
+			☐ Lista seleccionable de medicamentos
+			☐ Textfield con la cantidad que debe tomar ej: (media pastilla, un sobre...)
+			☐ Textfield con la frecuencia ej: (cada 8h, en las comidas, antes de dormir...)
+			☐ Textfield con duración ej: (3días, 14días...)
+			☐ Checkbox "Crónica" que si se marca se ignora el textfield de la duración y se establece como 365días.
+			☐ Botón "Añadir medicación" que elabora una lista visible
+			    Añadir medicación if:
+				Hay un medicamento seleccionado
+				Los textfield tienen menos de 100 caracteres
+				La cantidad y la frecuencia no están empty
+				La duración puede estar empty si está el checkbox marcado.
+				Si no está marcado el checkbox, la duración deberá estar rellena.
+			☐ Apartado para subir pdf donde el médico puede subir ficheros para el paciente como la receta, info sobre vacunas, menús específicos
+			para patologías concretas...
+			☐ Sección "Derivar a especialista" donde puede elegir otro médico y pedir una cita para el paciente.
+				☐ Deberá aparecer en el listado de citas futuras del paciente
+				☐ Tendrá las mismas características que la sección pedir cita paciente (con los mensajes adaptados) (el médico puede pedir
+				cita con 3 meses de antelación)
+			☐ Botón registrar que registra el resultado de la consulta en el sistema
