@@ -42,7 +42,8 @@ Se ha aceptado el diseño de un portal web que tenga dos puntos de entrada, uno 
 Página PACIENTE:
 	☐ Nombre e información del paciente
 	☐ Próximas citas (ID de cita, médico, fecha)
-	☐ Medicación actual > con su posología y cuándo debe dejar de tomarla
+		☐ Insertar datos tabla para tener próximas citas
+	☐ Medicación actual -> con su posología y cuándo debe dejar de tomarla
 	☐ Un listado de consultas pasadas con sus ID y la fecha que ocurrieron
 		☐ Al seleccionar una consulta (realizacion de select con consultas pasadas)> aparece en pantalla la info asociada
 		a esa consulta (tabla html) y si existe, el pdf.

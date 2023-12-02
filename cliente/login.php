@@ -17,10 +17,10 @@
         // Anexo el archivo conecta.php
         require_once '../BBDD/conecta.php';
 
-        // Variables que almacenarán el usuario y la contrasena en caso de ser correctos
+        // Variables que almacenarán el usuario y la contrasena y el id en caso de ser correctos
         $usuario;
         $contrasena;
-
+        $id;
         // Flag que marcará si el nombre y usuario introducidos son correctos
         $flag = false;
 
@@ -57,7 +57,9 @@
                         // Guardamos el tipo de usuario en la variable correspondiente
                         $fila = mysqli_fetch_assoc($result);
                         $tipoUsuario = $fila['tipo_usuario'];
+                        $id = $fila['id_tabla_original'];
                         echo "<p>El tipo de usuario es $tipoUsuario</p>";
+                        echo "<p>El id de la tabla original es $id</p>";    
                         
                     } else{
                         echo "<p>El usuario y contraseña introducidos no se encuentra.</p>";
@@ -77,8 +79,7 @@
         <?php
             // Si el usuario y la contraseña son correctos
             if($flag){
-                echo "<input type='hidden' value='$usuario' name='usuario'>";
-                echo "<input type='hidden' value='$contrasena' name='contrasena'>";
+                echo "<input type='hidden' value='$id' name='id'>";
             }
         ?>
         <button type="submit" name="enviar" <?php echo ($flag)?:"disabled";?>>Entrar</button>
