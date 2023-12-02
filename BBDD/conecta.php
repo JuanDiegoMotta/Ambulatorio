@@ -30,5 +30,14 @@
         function getConexion(){
             return $this->conexion;
         }
+        // Cambio de contexto a la base indicada
+        function seleccionarContexto($base){
+            mysqli_select_db($this->conexion, $base) or die(mysqli_error($this->conexion));
+        }
+        // Comprueba si una consulta da resultados
+        function comprobarExistencia($consulta){
+            $result = mysqli_query($this->conexion, $consulta) or die(mysqli_error($this->conexion));
+            return (mysqli_num_rows($result) > 0) ? true : false;
+        }
     }
 ?>
