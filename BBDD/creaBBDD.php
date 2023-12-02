@@ -21,6 +21,10 @@ function crearTablas(){
              * de las tablas es la acordada en la presentación del proyecto, con pequeñas modificaciones para hacer los nombres
              * más representativos y añadiendo el campo "pdf" a la tabla consulta.
              */
+            /**
+             * La tabla LOGIN se crea para almacenar información de inicio de sesión. Esta tabla se utiliza para autenticar a médicos y 
+             * pacientes en la aplicación. Los campos incluyen id_usuario, nombre_usuario, contrasena, tipo_usuario e id_tabla_original.
+             */
             if (mysqli_num_rows($result) == 0) {
                 $sql = "
                 CREATE DATABASE Ambulatorio;
@@ -69,6 +73,14 @@ function crearTablas(){
                     fecha_fin DATE,
                     FOREIGN KEY (id_medicamento) REFERENCES MEDICAMENTO(id_medicamento),
                     FOREIGN KEY (id_consulta) REFERENCES CONSULTA(id_consulta)
+                );
+
+                CREATE TABLE LOGIN (
+                    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+                    nombre_usuario VARCHAR(50),
+                    contrasena VARCHAR(50),
+                    tipo_usuario CHAR(1),
+                    id_tabla_original INT
                 );
                 ";
                 // Ejecutar las consultas de creación de BBDD y tablas
@@ -131,6 +143,16 @@ function insertarDatos(){
                 (2, 2, '2cap/mañana-2m', '2022-04-15'),
                 (3, 3, '1cap/12h-10d', '2022-03-30'),
                 (4, 4, '1cap/noche-5d', '2022-04-30');
+
+                INSERT INTO LOGIN (nombre_usuario, contrasena, tipo_usuario, id_tabla_original) VALUES
+                ('gomezjuan', 'WW2JZf%D', 'm', 1),
+                ('lopezmaria','%97FuZ9p', 'm', 2),
+                ('martinezcarlos', '%ZVnM8n6', 'm', 3),
+                ('rodriguezlaura', '5y!m79TN', 'm', 4),
+                ('gomezpedro', 'sJPv7L&^', 'p', 1),
+                ('sanchezana', 'MTpdg3^J', 'p', 2),
+                ('perezjuan', 'Zj#S%Nv3', 'p', 3),
+                ('gonzalezmaria', '!R4CyhzT', 'p', 4);
                 ";
                 // Ejecutar las consultas de inserción de datos
                 if (mysqli_multi_query($conexion, $sql_insert)) {
