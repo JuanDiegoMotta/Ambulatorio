@@ -36,8 +36,9 @@ Creación de tablas:
     ✔ Insertar al menos 4 datos en cada tabla, se debe simular que un paciente debe haber tenido varias consultas con el mismo médico y tiene medicación antigua¿? @done (11/30/2023, 1:03:00 PM)
 Cliente:
 Se ha aceptado el diseño de un portal web que tenga dos puntos de entrada, uno para los pacientes y otro para los médicos.
-☐ Creación login paciente
-☐ Creación login médico
+✔ Creación login paciente y médico @done (12/2/2023, 10:13:55 PM)
+	✔ Crear tabla LOGIN con tipo usuairo (m o p), usuarios, contraseñas, e ID tablas originales. @done (12/2/2023, 6:57:19 PM)
+	✔ Crear funcionalidad al clicar botón acceder, rediriga a la página correspondiente. @done (12/2/2023, 10:13:49 PM)
 Página PACIENTE:
 	☐ Nombre e información del paciente
 	☐ Próximas citas (ID de cita, médico, fecha)
@@ -82,3 +83,6 @@ Página CONSULTA:
 				☐ Tendrá las mismas características que la sección pedir cita paciente (con los mensajes adaptados) (el médico puede pedir
 				cita con 3 meses de antelación)
 			☐ Botón registrar que registra el resultado de la consulta en el sistema
+☐ ADAPTAR CÓDIGO PARA USO CLASES PHP
+☐ HACER QUE SE CREEE BBDD AL INICIAR EL LOG-IN SI NO EXISTE
+☐ APLICAR ESTILOS A TODO
