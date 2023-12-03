@@ -198,7 +198,8 @@ function infoCita($id_consulta)
     }
 }
 
-function medicosPaciente($id){
+function medicosPaciente($id)
+{
     $bd = new BaseDeDatos();
     try {
         if ($bd->conectar()) {
@@ -207,37 +208,36 @@ function medicosPaciente($id){
 
             // Ejecutamos consulta para conseguir los datos de los médicos que atienden a un paciente
             $sql = "SELECT id_med FROM paciente WHERE id_paciente = '$id'";
-            $result = mysqli_query($conexion, $sql) or die("Error consulta id_med paciente: ". mysqli_error($conexion));
+            $result = mysqli_query($conexion, $sql) or die("Error consulta id_med paciente: " . mysqli_error($conexion));
             $fila = mysqli_fetch_assoc($result);
             $stringMedicos = $fila['id_med'];
 
             // Convertimos el string de médicos en un array
             $arrayMedicos = explode(',', $stringMedicos);
-            
-            foreach($arrayMedicos as $id_medico){
+
+            foreach ($arrayMedicos as $id_medico) {
                 // Creamos consulta que devuleva el nombre del médico y su especialidad
                 $sql2 = "SELECT nombre_medico, apellidos_medico, especialidad FROM medico WHERE id_medico = '$id_medico'";
                 $result = mysqli_query($conexion, $sql2) or die("Error consulta nombre y especialidad médico para option: " . mysqli_error($conexion));
                 $fila = mysqli_fetch_assoc($result);
-                $nombre = $fila['nombre_medico']." ".$fila['apellidos_medico'];
+                $nombre = $fila['nombre_medico'] . " " . $fila['apellidos_medico'];
                 $especialidad = $fila['especialidad'];
 
                 // Imprimimos las <option></option> correspondientes
-                if($especialidad == 'Familia'){
-                    echo "<option value='$id_medico' selected>".$nombre." - ".$especialidad."</option>";
-                } else{
-                    echo "<option value='$id_medico'>".$nombre." - ".$especialidad."</option>";
+                if ($especialidad == 'Familia') {
+                    echo "<option value='$id_medico' selected>" . $nombre . " - " . $especialidad . "</option>";
+                } else {
+                    echo "<option value='$id_medico'>" . $nombre . " - " . $especialidad . "</option>";
                 }
-                
             }
-
         }
         $bd->cerrar();
     } catch (Exception $e) {
         echo $e->getMessage();
     }
 }
-function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia){
+function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia)
+{
     $bd = new BaseDeDatos();
     try {
         if ($bd->conectar()) {
@@ -250,12 +250,11 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             ('$id_medico', '$id_paciente', '$fecha_consulta', '$sintomatologia');
             ";
 
-            if(mysqli_query($conexion, $sql)){
+            if (mysqli_query($conexion, $sql)) {
                 echo "<p>Cita agendada correctamente</p>";
-            } else{
-                echo "Error al agendar la cita: ". mysqli_error($conexion);
+            } else {
+                echo "Error al agendar la cita: " . mysqli_error($conexion);
             }
-
         }
         $bd->cerrar();
     } catch (Exception $e) {
@@ -287,8 +286,19 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             tablificarInfo($_POST['id']);
         }
+
         ?>
     </div>
+    <?php
+    if (isset($_POST['agendar'])) {
+        $id_medico = $_POST['id_medico'];
+        $id_paciente = $_POST['id'];
+        $fecha_consulta = $_POST['date'];
+        // Guardo en sintomatología el texto del text area, si no se envió, un empty string
+        $sintomatologia = (isset($_POST['sintomatologia'])) ? $_POST['sintomatologia'] : "";
+        registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia);
+    }
+    ?>
     <div class="proximasCitas">
         <h2>Próximas citas</h2>
         <?php
@@ -308,6 +318,7 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
     <div class="citasPasadas">
         <h2>Selecciona una cita pasada para ver su info</h2>
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+            <label for="cita">Citas pasadas:</label>
             <select name="cita" id="cita" required>
                 <option value="" selected></option>
                 <?php
@@ -316,7 +327,7 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
                 }
                 ?>
             </select>
-            <input type="hidden" name="id" value="<?php echo $_POST['id'] ?>">
+            <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
             <button type="submit" name="verInfo">Ver información</button>
         </form>
         <?php
@@ -327,29 +338,22 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
     </div>
     <div class="pedirCita">
         <h2>Agenda un cita:</h2>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" onsubmit="return validacion()">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="formCita" onsubmit="return validacion()">
+            <label for="id_medico">Médicos asignados:</label>
             <select name="id_medico" id="medicos">
-            <?php
-            if($_SERVER['REQUEST_METHOD'] === 'POST'){
-                medicosPaciente($_POST['id']);
-            }
-            ?>
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    medicosPaciente($_POST['id']);
+                }
+                ?>
             </select>
+            <label for="date">Elije una fecha:</label>
             <input type="date" name="date" id="date">
+            <label for="sintomatologia">Íntroduce tus síntomas (opcional):</label>
             <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
-            <input type="hidden" name="id" value="<?php echo $_POST['id'] ?>">
+            <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
             <button type="submit" name="agendar">Agendar</button>
         </form>
-        <?php
-        if(isset($_POST['agendar'])){
-            $id_medico = $_POST['id_medico'];
-            $id_paciente = $_POST['id'];
-            $fecha_consulta = $_POST['date'];
-            // Guardo en sintomatología el texto del text area, si no se envió, un empty string
-            $sintomatologia = (isset($_POST['sintomatologia']))? $_POST['sintomatologia'] : "";
-            registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia);
-        }
-        ?>
     </div>
     <script src="index_paciente.js"></script>
 </body>

@@ -96,3 +96,5 @@ function validacion() {
     // Si todas las validaciones pasan, el formulario se enviará
     return true;
 }
+
+
