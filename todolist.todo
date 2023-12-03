@@ -40,19 +40,21 @@ Se ha aceptado el diseño de un portal web que tenga dos puntos de entrada, uno 
 	✔ Crear tabla LOGIN con tipo usuairo (m o p), usuarios, contraseñas, e ID tablas originales. @done (12/2/2023, 6:57:19 PM)
 	✔ Crear funcionalidad al clicar botón acceder, rediriga a la página correspondiente. @done (12/2/2023, 10:13:49 PM)
 Página PACIENTE:
-	☐ Nombre e información del paciente
-	☐ Próximas citas (ID de cita, médico, fecha)
-		☐ Insertar datos tabla para tener próximas citas
-	☐ Medicación actual -> con su posología y cuándo debe dejar de tomarla
-	☐ Un listado de consultas pasadas con sus ID y la fecha que ocurrieron
-		☐ Al seleccionar una consulta (realizacion de select con consultas pasadas)> aparece en pantalla la info asociada
-		a esa consulta (tabla html) y si existe, el pdf.
+	✔ Nombre e información del paciente @done (12/3/2023, 11:01:40 AM)
+	✔ Próximas citas (ID de cita, médico, fecha) @done (12/3/2023, 11:36:39 AM)
+		✔ Insertar datos tabla para tener próximas citas @done (12/3/2023, 11:01:46 AM)
+		✔ Crear consulta para que devuelva los datos de las consultas futuras @done (12/3/2023, 11:36:37 AM)
+	✔ Medicación actual -> con su posología y cuándo debe dejar de tomarla @done (12/3/2023, 12:15:35 PM)
+	✔ Un listado de consultas pasadas con sus ID y la fecha que ocurrieron @done (12/3/2023, 12:59:22 PM)
+		✔ Al seleccionar una consulta (realizacion de select con consultas pasadas)> aparece en pantalla la info asociada a esa consulta (tabla html) @done (12/3/2023, 1:00:08 PM)
+		☐ si existe, que aparezca el pdf también.
 	☐ Sección en la que se pueda pedir una cita (solo puede pedir citas con los médicos que le tratan)
-		☐ Select con los médicos que tratan al paciente y su especialidad, para seleccionar al médico. Opción por defecto será el médico de CABECERA o FAMILIA.
-		☐ Calendario para seleccionar la fecha (si la fecha es anterior mostrar mensaje "Fecha no válida") (si la fecha es un finde "Elija un día laborable") (si es para dentro de más de un mes 
-        "Selecciona una fecha que se encuentre entre los próximos 30 días")
-		☐ textarea para indicar sintomatología (opcional)
-		☐ si la fecha es correcta, en esta sección habrá un botón pedir cita para registrar la consulta.
+		✔ Insertar datos para que todos tengan un médico de cabezera @done (12/3/2023, 2:45:32 PM)
+		✔ Select con los médicos que tratan al paciente y su especialidad, para seleccionar al médico. Opción por defecto será el médico de CABECERA o FAMILIA. @done (12/3/2023, 2:45:40 PM)
+		✔ Calendario para seleccionar la fecha (si la fecha es anterior mostrar mensaje "Fecha no válida") (si la fecha es un finde "Elija un día laborable") (si es para dentro de más de un mes @done (12/3/2023, 3:42:15 PM)
+        ✔ "Selecciona una fecha que se encuentre entre los próximos 30 días") @done (12/3/2023, 3:42:26 PM)
+		✔ textarea para indicar sintomatología (opcional) @done (12/3/2023, 3:42:32 PM)
+		✔ si la fecha es correcta, en esta sección habrá un botón pedir cita para registrar la consulta. @done (12/3/2023, 3:42:39 PM)
 Página MEDICO:
 	☐ Nombre e información del médico(especialidad)
 	☐ Número de consultas que tiene en los próximos 7 días

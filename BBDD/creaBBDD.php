@@ -118,13 +118,15 @@ function insertarDatos(){
                 ('Dr. Juan', 'Gómez', 'Cardiología'),
                 ('Dra. María', 'López', 'Pediatría'),
                 ('Dr. Carlos', 'Martínez', 'Dermatología'),
-                ('Dra. Laura', 'Rodríguez', 'Ginecología');
+                ('Dra. Laura', 'Rodríguez', 'Ginecología'),
+                ('Dr. Pablo', 'Motos', 'Familia'),
+                ('Dra. Lucía', 'Pozo', 'Familia');
                 
                 INSERT INTO PACIENTE (dni, nombre_paciente, apellidos_paciente, genero, fecha_nac, id_med) VALUES 
-                ('78901234D', 'Pedro', 'Gómez', 'M', '1978-11-25', 1),
-                ('12345678A', 'Ana', 'Sánchez', 'F', '2010-05-15', 2),
-                ('98765432B', 'Juan', 'Pérez', 'M', '1985-08-20', 3),
-                ('45678901C', 'María', 'González', 'F', '2000-02-10', 4);
+                ('78901234D', 'Pedro', 'Gómez', 'M', '1978-11-25', '1,5'),
+                ('12345678A', 'Ana', 'Sánchez', 'F', '2010-05-15', '2,5'),
+                ('98765432B', 'Juan', 'Pérez', 'M', '1985-08-20', '3,6'),
+                ('45678901C', 'María', 'González', 'F', '2000-02-10', '4,6');
                 
                 INSERT INTO MEDICAMENTO (nombre_medicamento) VALUES 
                 ('Enalapril'),
@@ -133,22 +135,28 @@ function insertarDatos(){
                 ('Doxilamina-piridoxina');
                 
                 INSERT INTO CONSULTA (id_medico, id_paciente, fecha_consulta, diagnostico, sintomatologia) VALUES 
-                (1, 1, '2022-01-10', 'Hipertensión arterial', 'Dolor de cabeza, mareos'),
-                (2, 2, '2022-02-15', 'Infección respiratoria', 'Fiebre, tos'),
-                (3, 3, '2022-03-20', 'Dermatitis', 'Picazón, enrojecimiento'),
-                (4, 4, '2022-04-25', 'hiperémesis gravídica', 'Náuseas y vómitos debido al embarazo');
+                (1, 1, '2023-12-1', 'Hipertensión arterial', 'Dolor de cabeza, mareos'),
+                (2, 2, '2023-11-15', 'Infección respiratoria', 'Fiebre, tos'),
+                (3, 3, '2023-11-26', 'Dermatitis', 'Picazón, enrojecimiento'),
+                (4, 4, '2023-11-29', 'hiperémesis gravídica', 'Náuseas y vómitos debido al embarazo'),
+                (5, 1, '2023-12-10', '','Dolor de barriga'),
+                (5, 2, '2023-12-9', '','Picazón en la garganta'),
+                (6, 3, '2024-01-5', '','Insomnio'),
+                (6, 4, '2023-12-10', '','Debilidad y cansancio');
                 
                 INSERT INTO RECETA (id_medicamento, id_consulta, posologia, fecha_fin) VALUES 
-                (1, 1, '1cap/8h-7d', '2022-01-17'),
-                (2, 2, '2cap/mañana-2m', '2022-04-15'),
-                (3, 3, '1cap/12h-10d', '2022-03-30'),
-                (4, 4, '1cap/noche-5d', '2022-04-30');
-
+                (1, 1, '1cap/8h-7d', '2023-12-8'),
+                (2, 2, '2cap/mañana-2m', '2024-01-15'),
+                (3, 3, '1cap/12h-10d', '2023-12-6'),
+                (4, 4, '1cap/noche-6d', '2023-12-5');
+                
                 INSERT INTO LOGIN (nombre_usuario, contrasena, tipo_usuario, id_tabla_original) VALUES
                 ('gomezjuan', 'WW2JZf%D', 'm', 1),
                 ('lopezmaria','%97FuZ9p', 'm', 2),
                 ('martinezcarlos', '%ZVnM8n6', 'm', 3),
                 ('rodriguezlaura', '5y!m79TN', 'm', 4),
+                ('motospablo', '12345', 'm', 5),
+                ('pozolucia', 'asdfjk', 'm',  6),
                 ('gomezpedro', 'sJPv7L&^', 'p', 1),
                 ('sanchezana', 'MTpdg3^J', 'p', 2),
                 ('perezjuan', 'Zj#S%Nv3', 'p', 3),
