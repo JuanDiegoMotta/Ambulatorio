@@ -1,6 +1,4 @@
 <?php
-require_once '../BBDD/conecta.php';
-
 // Creo función para tablificar la información del médico
 function tablificarInfo($id)
 {
@@ -40,6 +38,7 @@ function tablificarInfo($id)
     }
 }
 
+// Función para tablificar las citas de los próximos 7 días de un médico
 function proximasCitas($id)
 {
     // Creamos una instancia de BBDD
@@ -85,6 +84,7 @@ function proximasCitas($id)
     }
 }
 
+// Función para imprimir los <option></option> correspondientes a las consultas de la fecha
 function consultasDeHoy($id)
 {
     // Creamos una instancia de BBDD
@@ -96,7 +96,7 @@ function consultasDeHoy($id)
             $bd->seleccionarContexto('Ambulatorio');
             $conexion = $bd->getConexion();
 
-            // Ejecutamos consulta para conseguir las citas de los próximos 7 días del médico
+            // Ejecutamos consulta para conseguir las citas de hoy
             $sql = "SELECT c.id_consulta, p.nombre_paciente, p.apellidos_paciente, c.sintomatologia
                 FROM CONSULTA c
                 JOIN PACIENTE p ON c.id_paciente = p.id_paciente
@@ -119,61 +119,3 @@ function consultasDeHoy($id)
         echo $e->getMessage();
     }
 }
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-    </style>
-    <title>Médico</title>
-</head>
-
-<body>
-    <div class="infoMedico">
-        <h2>Información Médico</h2>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id_medico = $_POST['id'];
-            tablificarInfo($id_medico);
-        }
-        ?>
-    </div>
-    <div class="proximasConsultas">
-        <h2>Próximas consultas:</h2>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id_medico = $_POST['id'];
-            proximasCitas($id_medico);
-        }
-        ?>
-    </div>
-    <div class="citasHoy">
-        <h2>Citas de hoy:</h2>
-        <form action="editar_consulta.php" method="post">
-            <label for="id_consulta">Citas para hoy:</label>
-            <select name="id_consulta" id="id_consulta" required>
-                <option value="" selected></option>
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $id_medico = $_POST['id'];
-                    consultasDeHoy($id_medico);
-                }
-                ?>
-            </select>
-            <button type="submit" name="seleccionar">Seleccionar cita</button>
-        </form>
-    </div>
-</body>
-
-</html>

@@ -1,5 +1,4 @@
 <?php
-require_once '../BBDD/conecta.php';
 
 // Creo función para tablificar la información del paciente
 function tablificarInfo($id)
@@ -43,8 +42,11 @@ function tablificarInfo($id)
         echo $e->getMessage();
     }
 }
+
+// Función para tablificar las próximas citas de un paciente
 function proximasCitas($id)
 {
+    // Me conecto a la BBDD
     $bd = new BaseDeDatos();
     try {
         if ($bd->conectar()) {
@@ -83,8 +85,11 @@ function proximasCitas($id)
         echo $e->getMessage();
     }
 }
+
+// Función para conseguir las recetas actuales de un paciente
 function medActual($id)
 {
+    // Me conecto a BBDD
     $bd = new BaseDeDatos();
     try {
         if ($bd->conectar()) {
@@ -101,6 +106,7 @@ function medActual($id)
             AND r.fecha_fin >= '$fechaActual'";
 
             $result = mysqli_query($conexion, $sql);
+
             // Imprimimos la tabla HTML
             echo "<table>";
             echo "<tr>";
@@ -122,6 +128,8 @@ function medActual($id)
         echo $e->getMessage();
     }
 }
+
+// Función para imprimir <option></option> con citas anteriores
 function anterioresCitas($id)
 {
     $bd = new BaseDeDatos();
@@ -152,6 +160,8 @@ function anterioresCitas($id)
         echo $e->getMessage();
     }
 }
+
+// Función que tablifica la información de una cita
 function infoCita($id_consulta)
 {
     $bd = new BaseDeDatos();
@@ -198,6 +208,7 @@ function infoCita($id_consulta)
     }
 }
 
+// Función para imprimir los <option></option> de los médicos que atienden un paciente
 function medicosPaciente($id)
 {
     $bd = new BaseDeDatos();
@@ -236,8 +247,14 @@ function medicosPaciente($id)
         echo $e->getMessage();
     }
 }
+
+// Función para registrar una cita
 function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia)
 {
+    // Creo flag que se retornará en función del éxito o fracaso de la consulta
+    $flag = false;
+
+    // Me conecto a la BBDD
     $bd = new BaseDeDatos();
     try {
         if ($bd->conectar()) {
@@ -251,7 +268,8 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             ";
 
             if (mysqli_query($conexion, $sql)) {
-                echo "<p>Cita agendada correctamente</p>";
+                // Si se ejecuta correctamente
+                $flag = true;
             } else {
                 echo "Error al agendar la cita: " . mysqli_error($conexion);
             }
@@ -260,102 +278,5 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
     } catch (Exception $e) {
         echo $e->getMessage();
     }
+    return $flag;
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-    </style>
-    <title>Paciente</title>
-</head>
-
-<body>
-    <div class="info">
-        <h2>Información paciente</h2>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            tablificarInfo($_POST['id']);
-        }
-
-        ?>
-    </div>
-    <?php
-    if (isset($_POST['agendar'])) {
-        $id_medico = $_POST['id_medico'];
-        $id_paciente = $_POST['id'];
-        $fecha_consulta = $_POST['date'];
-        // Guardo en sintomatología el texto del text area, si no se envió, un empty string
-        $sintomatologia = (isset($_POST['sintomatologia'])) ? $_POST['sintomatologia'] : "";
-        registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia);
-    }
-    ?>
-    <div class="proximasCitas">
-        <h2>Próximas citas</h2>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            proximasCitas($_POST['id']);
-        }
-        ?>
-    </div>
-    <div class="medicacionActual">
-        <h2>Medicación Actual</h2>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            medActual($_POST['id']);
-        }
-        ?>
-    </div>
-    <div class="citasPasadas">
-        <h2>Selecciona una cita pasada para ver su info</h2>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-            <label for="cita">Citas pasadas:</label>
-            <select name="cita" id="cita" required>
-                <option value="" selected></option>
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    anterioresCitas($_POST['id']);
-                }
-                ?>
-            </select>
-            <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
-            <button type="submit" name="verInfo">Ver información</button>
-        </form>
-        <?php
-        if (isset($_POST['verInfo'])) {
-            infoCita($_POST['cita']);
-        }
-        ?>
-    </div>
-    <div class="pedirCita">
-        <h2>Agenda un cita:</h2>
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="formCita" onsubmit="return validacion()">
-            <label for="id_medico">Médicos asignados:</label>
-            <select name="id_medico" id="medicos">
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    medicosPaciente($_POST['id']);
-                }
-                ?>
-            </select>
-            <label for="date">Elije una fecha:</label>
-            <input type="date" name="date" id="date">
-            <label for="sintomatologia">Introduce tus síntomas (opcional):</label>
-            <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
-            <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
-            <button type="submit" name="agendar">Agendar</button>
-        </form>
-    </div>
-    <script src="index_paciente.js"></script>
-</body>
-
-</html>

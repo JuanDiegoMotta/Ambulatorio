@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    <!-- Formulario que recoge los datos del login -->
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" onsubmit="return validacion()">
         <label for="usuario">Usuario:</label>
         <input type="text" name="usuario" id="usuario">
@@ -30,8 +31,7 @@
         // Compruebo si se ha clicado el botón enviar y $_POST contiene valores (a pesar de que esto ya lo compruebo en el js, pero no está de más prevenir)
         if (isset($_POST['comprobar']) & isset($_POST['usuario']) & isset($_POST['contrasena'])) {
             
-            
-            // Creao instancia BBDD
+            // Creo instancia BBDD
             $bd = new BaseDeDatos();
             
             // Intento conectar con la BBDD
@@ -51,15 +51,13 @@
                     $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
 
                     if(mysqli_num_rows($result)>0){
-                        echo "<p>El usuario y contraseña introducidos existe.</p>";
                         $flag = true;
 
                         // Guardamos el tipo de usuario en la variable correspondiente
                         $fila = mysqli_fetch_assoc($result);
                         $tipoUsuario = $fila['tipo_usuario'];
                         $id = $fila['id_tabla_original'];
-                        echo "<p>El tipo de usuario es $tipoUsuario</p>";
-                        echo "<p>El id de la tabla original es $id</p>";    
+                        echo "<p>El usuario y contraseña son correctos.</p>";
                         
                     } else{
                         echo "<p>El usuario y contraseña introducidos no se encuentra.</p>";
@@ -73,9 +71,10 @@
             }
         };
         ?>
-        <button type="submit" name="comprobar">Comprobar</button>
+        <button type="submit" name="comprobar" <?php echo ($flag)?"disabled":"";?>>Comprobar</button>
     </form>
-    <form action="<?php if($flag){echo ($tipoUsuario == 'm')? 'index_medico.php': 'index_paciente.php';}?>" method="post">
+    <!-- Formulario que se encarga de redirigir a la página correspondiente en función de si el tipoUsuario es paciente o médico -->
+    <form action="<?php if($flag){echo ($tipoUsuario == 'm')? 'medico/index_medico.php': 'paciente/index_paciente.php';}?>" method="post">
         <?php
             // Si el usuario y la contraseña son correctos
             if($flag){

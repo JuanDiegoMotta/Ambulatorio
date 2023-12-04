@@ -24,6 +24,7 @@ function validacion() {
         }
     }
 
+    // Comprobamos lo mismo con la contraseña
     if (pwd == null || pwd.length == 0 || pwd.trim() == "") {
         let inputPwd = document.getElementById("contrasena");
         inputPwd.style.borderColor = "red";

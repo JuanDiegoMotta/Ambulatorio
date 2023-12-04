@@ -86,7 +86,7 @@ Página CONSULTA:
 			✔ Botón update que actualiza la consulta en el sistema con el textarea de diagnóstico y de sintomatología. @done (12/4/2023, 12:23:19 PM)
 ✔ index_medico.php próximas consultas -> que no aparezcan las de hoy @done (12/4/2023, 12:32:02 PM)
 ✔ Validación extra @done (12/4/2023, 1:28:21 PM)
-☐ Comentar todo
+✔ Comentar todo @done (12/4/2023, 6:39:24 PM)
 ☐ Crear nuevos datos en creaBBDD para que todos los pacientes tengan citas futuras, pasadas y presentes. Crear más médicos y asociarlos a pacientes mediante id_med y mediante consultas
 ☐ HACER QUE SE CREEE BBDD AL INICIAR EL LOG-IN SI NO EXISTE
 ☐ APLICAR ESTILOS A TODO
