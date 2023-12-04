@@ -191,7 +191,8 @@ function conseguir_nombre_medicamento($id)
     }
     return $nombre_medicamento;
 }
-function tablificarArray($arrayMedicacion){
+function tablificarArray($arrayMedicacion)
+{
     echo "<table>";
     echo "<tr>";
     echo "<th>Nombre_medicamento</th>";
@@ -202,9 +203,9 @@ function tablificarArray($arrayMedicacion){
     foreach ($arrayMedicacion as $medicacion) {
         echo "<tr>";
         foreach ($medicacion as $clave => $valor) {
-            if($clave == 'id_medicamento'){
-                echo "<td>".conseguir_nombre_medicamento($valor)."</td>";
-            } else{
+            if ($clave == 'id_medicamento') {
+                echo "<td>" . conseguir_nombre_medicamento($valor) . "</td>";
+            } else {
                 echo "<td>$valor</td>";
             }
         }
@@ -212,7 +213,123 @@ function tablificarArray($arrayMedicacion){
     }
     echo "</table>";
 }
+function medicosPaciente($id)
+{
+    $bd = new BaseDeDatos();
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
 
+            // Ejecutamos consulta para conseguir los datos de los médicos que atienden a un paciente
+            $sql = "SELECT id_med FROM paciente WHERE id_paciente = '$id'";
+            $result = mysqli_query($conexion, $sql) or die("Error consulta id_med paciente: " . mysqli_error($conexion));
+            $fila = mysqli_fetch_assoc($result);
+            $stringMedicos = $fila['id_med'];
+
+            // Convertimos el string de médicos en un array
+            $arrayMedicos = explode(',', $stringMedicos);
+
+            foreach ($arrayMedicos as $id_medico) {
+                // Creamos consulta que devuleva el nombre del médico y su especialidad
+                $sql2 = "SELECT nombre_medico, apellidos_medico, especialidad FROM medico WHERE id_medico = '$id_medico'";
+                $result = mysqli_query($conexion, $sql2) or die("Error consulta nombre y especialidad médico para option: " . mysqli_error($conexion));
+                $fila = mysqli_fetch_assoc($result);
+                $nombre = $fila['nombre_medico'] . " " . $fila['apellidos_medico'];
+                $especialidad = $fila['especialidad'];
+
+                // Imprimimos las <option></option> correspondientes
+                if ($especialidad == 'Familia') {
+                    echo "<option value='$id_medico' selected>" . $nombre . " - " . $especialidad . "</option>";
+                } else {
+                    echo "<option value='$id_medico'>" . $nombre . " - " . $especialidad . "</option>";
+                }
+            }
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
+
+function conseguir_id_paciente($id_consulta)
+{
+    // Creamos una instancia de BBDD
+    $bd = new BaseDeDatos();
+    $id_paciente = "";
+
+    // Intentamos conectarnos
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
+
+            // Ejecuto consulta para conseguir id_medicamento
+            $sql = "
+                    SELECT id_paciente FROM consulta WHERE id_consulta = '$id_consulta';
+                    ";
+            $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+            $fila = mysqli_fetch_assoc($result);
+            $id_paciente = $fila['id_paciente'];
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+    return $id_paciente;
+}
+function conseguir_id_medico($id_consulta)
+{
+    // Creamos una instancia de BBDD
+    $bd = new BaseDeDatos();
+    $id_medico = "";
+
+    // Intentamos conectarnos
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
+
+            // Ejecuto consulta para conseguir id_medico
+            $sql = "
+                    SELECT id_medico FROM consulta WHERE id_consulta = '$id_consulta';
+                    ";
+            $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+            $fila = mysqli_fetch_assoc($result);
+            $id_medico = $fila['id_medico'];
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+    return $id_medico;
+}
+
+function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia)
+{
+    $bd = new BaseDeDatos();
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
+
+            // Ejecuto INSERT para agregar los datos a la tabla CONSULTA
+            $sql = "
+            INSERT INTO CONSULTA (id_medico, id_paciente, fecha_consulta, sintomatologia) VALUES
+            ('$id_medico', '$id_paciente', '$fecha_consulta', '$sintomatologia');
+            ";
+
+            if (mysqli_query($conexion, $sql)) {
+                echo "<p>Cita agendada correctamente</p>";
+            } else {
+                echo "Error al agendar la cita: " . mysqli_error($conexion);
+            }
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -339,6 +456,37 @@ function tablificarArray($arrayMedicacion){
         if (isset($arrayMedicacion)) {
             $arrayMedicacion = unserialize($arrayMedicacion);
             tablificarArray($arrayMedicacion);
+        }
+        ?>
+    </div>
+    <div class="derivarEspecialista">
+        <h2>Derivar a especialista</h2>
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post" id="formCita" onsubmit="return validacion2()">
+            <label for="id_medico">Médicos asignados:</label>
+            <select name="id_medico" id="medicos">
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    $id_consulta = $_POST['id_consulta'];
+                    medicosPaciente(conseguir_id_paciente($id_consulta));
+                }
+                ?>
+            </select>
+            <label for="date">Elije una fecha:</label>
+            <input type="date" name="date" id="date">
+            <label for="sintomatologia">Introduce los síntomas (opcional):</label>
+            <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
+            <input type="hidden" name="id_consulta" value="<?php echo $_POST['id_consulta']; ?>">
+            <button type="submit" name="agendar">Agendar</button>
+        </form>
+        <?php
+        if (isset($_POST['agendar'])) {
+            $id_consulta = $_POST['id_consulta'];
+            $id_medico = conseguir_id_medico($id_consulta);
+            $id_paciente = conseguir_id_paciente($id_consulta);
+            $fecha_consulta = $_POST['date'];
+            // Guardo en sintomatología el texto del text area, si no se envió, un empty string
+            $sintomatologia = (isset($_POST['sintomatologia'])) ? $_POST['sintomatologia'] : "";
+            registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologia);
         }
         ?>
     </div>

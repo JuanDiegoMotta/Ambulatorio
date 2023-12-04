@@ -80,9 +80,9 @@ Página CONSULTA:
 				Si no está marcado el checkbox, la duración deberá estar rellena.
 			☐ Apartado para subir pdf donde el médico puede subir ficheros para el paciente como la receta, info sobre vacunas, menús específicos
 			para patologías concretas...
-			☐ Sección "Derivar a especialista" donde puede elegir otro médico y pedir una cita para el paciente.
-				☐ Deberá aparecer en el listado de citas futuras del paciente
-				☐ Tendrá las mismas características que la sección pedir cita paciente (con los mensajes adaptados) (el médico puede pedir
+			✔ Sección "Derivar a especialista" donde puede elegir otro médico y pedir una cita para el paciente. @done (12/4/2023, 1:37:11 AM)
+				✔ Deberá aparecer en el listado de citas futuras del paciente @done (12/4/2023, 1:37:12 AM)
+				✔ Tendrá las mismas características que la sección pedir cita paciente (con los mensajes adaptados) (el médico puede pedir @done (12/4/2023, 1:37:14 AM)
 				cita con 3 meses de antelación)
 			☐ Botón registrar que registra el resultado de la consulta en el sistema
 ☐ ADAPTAR CÓDIGO PARA USO CLASES PHP
