@@ -10,14 +10,8 @@ require_once 'funciones_paciente.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="paciente.css">
+    <link rel="shortcut icon" href="../../favicon/paciente.png" type="image/x-icon">
     <title>Paciente</title>
 </head>
 
@@ -110,20 +104,20 @@ require_once 'funciones_paciente.php';
             <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
             <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
             <button type="submit" name="agendar">Agendar</button>
+            <?php
+            // Compruebo si se ha pulsado el botón de agendar cita
+            if (isset($_POST['agendar'])) {
+                // Si se ha agendado correctamente
+                if ($flag) {
+                    // Muestro mensaje de éxito
+                    echo "<p class='mensajeExito'>Cita agendada correctamente</p>";
+                } else {
+                    echo "<p class='mensajeError'>Error al agendar la cita</p>";
+                }
+            }
+            ?>
         </form>
     </div>
-    <?php
-    // Compruebo si se ha pulsado el botón de agendar cita
-    if (isset($_POST['agendar'])) {
-        // Si se ha agendado correctamente
-        if($flag){
-            // Muestro mensaje de éxito
-            echo "<p>Cita agendada correctamente</p>";
-        }else{
-            echo "<p>Error al agendar la cita</p>";
-        }
-    }
-    ?>
     <script src="index_paciente.js"></script>
 </body>
 

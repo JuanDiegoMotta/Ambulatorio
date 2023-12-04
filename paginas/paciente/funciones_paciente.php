@@ -182,8 +182,8 @@ function infoCita($id_consulta)
             $diagnostico = $fila['diagnostico'];
             $sintomatologia = $fila['sintomatologia'];
             $fecha_consulta = $fila['fecha_consulta'];
-
-            echo "<h3>INFORMACIÓN CITA:</h3>";
+            echo "<br>";
+            echo "<h2>Información cita:</h2>";
             // Imprimimos la tabla HTML
             echo "<table>";
             echo "<tr>";

@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f2f2f2;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+.infoMedico, .proximasConsultas, .citasHoy {
+    background-color: white;
+    width: 80%;
+    max-width: 800px;
+    margin: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #4a7c59; /* Un tono diferente para diferenciar del paciente */
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4a7c59; /* Un tono diferente para diferenciar del paciente */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #36703d; /* Un tono más oscuro para el hover */
+}
+
+p {
+    color: #333;
+    margin-top: 10px;
+}
+
+/* Estilo específico para los mensajes de éxito o error */
+.mensajeExito {
+    color: green; 
+    font-style: italic;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.mensajeError {
+    color: red; 
+    font-style: italic;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4a7c59; /* Un tono diferente para diferenciar del paciente */
+    color: white;
+    font-weight: normal;
+}
+
+td {
+    color: #333;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e6e6e6;
+}

@@ -372,7 +372,7 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             ";
 
             if (mysqli_query($conexion, $sql)) {
-                echo "<p>Cita agendada correctamente</p>";
+                echo "<p class='mensajeExito'>Cita agendada correctamente</p>";
             } else {
                 echo "Error al agendar la cita: " . mysqli_error($conexion);
             }

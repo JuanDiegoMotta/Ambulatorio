@@ -12,14 +12,8 @@ require_once 'funciones_medico.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="medico.css">
+    <link rel="shortcut icon" href="../../favicon/medico.png" type="image/x-icon">
     <title>Médico</title>
 </head>
 

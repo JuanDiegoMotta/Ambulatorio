@@ -9,14 +9,8 @@ require_once 'funciones_consulta.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        table,
-        th,
-        td {
-            border-collapse: collapse;
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" href="consulta.css">
+    <link rel="shortcut icon" href="../../favicon/consulta.png" type="image/x-icon">
     <title>Consulta</title>
 </head>
 
@@ -121,19 +115,19 @@ require_once 'funciones_consulta.php';
                 echo "<input type='hidden' name='arrayMedicacion' value='$arrayMedicacion'>";
             }
             ?>
+            <?php
+            // Si se ha clicado el botón actualizarConsulta, mostramos mensaje de éxito o fracaso
+            if (isset($_POST['actualizarConsulta'])) {
+                if ($flag) {
+                    echo "<p class='mensajeExito'>Consulta actualizada correctamente.</p>";
+                } else {
+                    echo "<p>Error al actualizar consulta</p>";
+                }
+            }
+            ?>
             <button type="submit" name="actualizarConsulta">Actualizar consulta</button>
         </form>
     </div>
-    <?php
-    // Si se ha clicado el botón actualizarConsulta, mostramos mensaje de éxito o fracaso
-    if (isset($_POST['actualizarConsulta'])) {
-        if ($flag) {
-            echo "<p>Consulta actualizada correctamente.</p>";
-        } else {
-            echo "<p>Error al actualizar consulta</p>";
-        }
-    }
-    ?>
     <!-- Sección para agregar receta -->
     <div class="medicacion">
         <h2>Medicación:</h2>
@@ -172,7 +166,7 @@ require_once 'funciones_consulta.php';
         // Si existe $_POST['anadirMedicacion']
         if (isset($_POST['anadirMedicacion'])) {
             if ($flag) {
-                echo "<p>Medicación añadida correctamente a RECETA.</p>";
+                echo "<p class='mensajeExito'>Medicación añadida correctamente a RECETA.</p>";
             }
         }
         // Si existe $arrayMedicacion o $_POST['arrayMedicacion]

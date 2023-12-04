@@ -103,7 +103,6 @@ function crearTablas()
                 ";
             // Ejecutar las consultas de creación de BBDD y tablas
             if (mysqli_multi_query($conexion, $sql)) {
-                echo "Tablas creadas exitosamente.";
             } else {
                 echo "Error al crear las tablas: " . mysqli_error($conexion);
             }
@@ -166,7 +165,10 @@ function insertarDatos()
                 (9, 3, '2023-12-7', '','Alergia'),
                 (4, 4, '2023-11-29', 'hiperémesis gravídica', 'Náuseas y vómitos debido al embarazo'),
                 (6, 4, '2023-12-4', '','Debilidad y cansancio'),
-                (7, 4, '2023-12-8', '', 'Alzeimer temporal');
+                (7, 4, '2023-12-8', '', 'Alzeimer temporal'),
+                (1, 3, '2023-12-6', '', 'Arritmias'),
+                (1, 2, '2023-12-8', '', 'miocarditis'),
+                (1, 4, '2023-12-4', '', 'parahoy');
                 
                 INSERT INTO RECETA (id_medicamento, id_consulta, posologia, fecha_fin) VALUES 
                 (1, 1, '1cap/noche-7dias', '2023-12-8'),
@@ -197,7 +199,6 @@ function insertarDatos()
                 ";
             // Ejecutar las consultas de inserción de datos
             if (mysqli_multi_query($conexion, $sql_insert)) {
-                echo "Datos insertados correctamente";
             } else {
                 echo "Error al insertar los datos:" . mysqli_error($conexion);
             }
