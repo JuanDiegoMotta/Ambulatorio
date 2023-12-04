@@ -106,6 +106,24 @@ function validacion() {
             document.getElementById("vacio3").remove();
         }
     }
+    // Comprobar que si "cronica" no está marcado, entonces "duracion" debe ser un número
+    if (!cronica.checked && isNaN(duracion.value)) {
+        // Cambio el borde a rojo
+        duracion.style.borderColor = "red";
+        // Añado mensaje de error
+        let error = document.createElement("span");
+        error.id = "noNumero";
+        error.textContent = "La duración debe ser un número si no es una medicación crónica";
+        duracion.insertAdjacentElement("afterend", error);
+        return false;
+    } else {
+        // Si vuelve a pulsar el botón y esta vez es correcto
+        duracion.style.borderColor = "black";
+        // Elimino mensaje de error
+        if (document.getElementById("noNumero")) {
+            document.getElementById("noNumero").remove();
+        }
+    }
 
     // Si todas las validaciones pasan, el formulario se enviará
     return true;

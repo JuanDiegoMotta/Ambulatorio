@@ -56,7 +56,7 @@ function proximasCitas($id)
             FROM CONSULTA c
             JOIN PACIENTE p ON c.id_paciente = p.id_paciente
             WHERE c.id_medico = '$id'
-            AND c.fecha_consulta BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY);
+            AND c.fecha_consulta BETWEEN CURDATE() + INTERVAL 1 DAY AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
             ";
             $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
             echo "Citas para la próxima semana: " . mysqli_num_rows($result);
