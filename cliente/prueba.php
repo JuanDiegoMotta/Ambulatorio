@@ -20,10 +20,13 @@
         <button type="submit">Enviar</button>
     </form>
     <?php
-    if($_SERVER['REQUEST_METHOD'] === 'POST'){
-        $fechaOriginal = $_POST['date'];
-        echo $fechaOriginal;
-    }
+    $fechaActual = new DateTime(); // Obtener la fecha actual
+    $numeroDias = '365'; // Número de días que deseas sumar
+
+    $fechaResultante = $fechaActual->modify("+$numeroDias days");
+    
+    $fechaFinal = $fechaResultante->format('Y-m-d'); // Formatear y mostrar la fecha resultante
+    echo $fechaFinal;
     ?>
 </body>
 

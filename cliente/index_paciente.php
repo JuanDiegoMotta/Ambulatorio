@@ -349,7 +349,7 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             </select>
             <label for="date">Elije una fecha:</label>
             <input type="date" name="date" id="date">
-            <label for="sintomatologia">Íntroduce tus síntomas (opcional):</label>
+            <label for="sintomatologia">Introduce tus síntomas (opcional):</label>
             <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
             <input type="hidden" name="id" value="<?php echo $_POST['id']; ?>">
             <button type="submit" name="agendar">Agendar</button>

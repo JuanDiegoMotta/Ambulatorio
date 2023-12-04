@@ -48,7 +48,7 @@ Página PACIENTE:
 	✔ Un listado de consultas pasadas con sus ID y la fecha que ocurrieron @done (12/3/2023, 12:59:22 PM)
 		✔ Al seleccionar una consulta (realizacion de select con consultas pasadas)> aparece en pantalla la info asociada a esa consulta (tabla html) @done (12/3/2023, 1:00:08 PM)
 		☐ si existe, que aparezca el pdf también.
-	☐ Sección en la que se pueda pedir una cita (solo puede pedir citas con los médicos que le tratan)
+	✔ Sección en la que se pueda pedir una cita (solo puede pedir citas con los médicos que le tratan) @done (12/3/2023, 9:02:56 PM)
 		✔ Insertar datos para que todos tengan un médico de cabezera @done (12/3/2023, 2:45:32 PM)
 		✔ Select con los médicos que tratan al paciente y su especialidad, para seleccionar al médico. Opción por defecto será el médico de CABECERA o FAMILIA. @done (12/3/2023, 2:45:40 PM)
 		✔ Calendario para seleccionar la fecha (si la fecha es anterior mostrar mensaje "Fecha no válida") (si la fecha es un finde "Elija un día laborable") (si es para dentro de más de un mes @done (12/3/2023, 3:42:15 PM)
@@ -56,23 +56,22 @@ Página PACIENTE:
 		✔ textarea para indicar sintomatología (opcional) @done (12/3/2023, 3:42:32 PM)
 		✔ si la fecha es correcta, en esta sección habrá un botón pedir cita para registrar la consulta. @done (12/3/2023, 3:42:39 PM)
 Página MEDICO:
-	☐ Nombre e información del médico(especialidad)
-	☐ Número de consultas que tiene en los próximos 7 días
-	☐ Consultas de hoy, con el ID de la cita, el paciente, y un pequeño extracto (los primeros 100 caracteres de la sintomología),
-	en caso de que exista.
-	☐ Al seleccionar una consulta
+	✔ Nombre e información del médico(especialidad) @done (12/3/2023, 6:07:50 PM)
+	✔ Número de consultas que tiene en los próximos 7 días @done (12/3/2023, 6:26:19 PM)
+	✔ Consultas de hoy, con el ID de la cita, el paciente, y un pequeño extracto (los primeros 100 caracteres de la sintomología), @done (12/3/2023, 6:49:47 PM)
+	✔ Al seleccionar una consulta @done (12/3/2023, 8:08:40 PM)
 Página CONSULTA:
-	☐ Info de la consulta no editable (médico, paciente, fecha)
+	✔ Info de la consulta no editable (médico, paciente, fecha) @done (12/3/2023, 8:08:41 PM)
 	Info de la consulta editable:
-		☐ Sintomatología: Textarea con info previa, si existe. El médico puede sobreescribir y añadir más información.
-		☐ Diagnóstico: Textarea
+		✔ Sintomatología: Textarea con info previa, si existe. El médico puede sobreescribir y añadir más información. @done (12/3/2023, 8:27:31 PM)
+		✔ Diagnóstico: Textarea @done (12/3/2023, 8:29:40 PM)
 		Medicación:
-			☐ Lista seleccionable de medicamentos
-			☐ Textfield con la cantidad que debe tomar ej: (media pastilla, un sobre...)
-			☐ Textfield con la frecuencia ej: (cada 8h, en las comidas, antes de dormir...)
-			☐ Textfield con duración ej: (3días, 14días...)
-			☐ Checkbox "Crónica" que si se marca se ignora el textfield de la duración y se establece como 365días.
-			☐ Botón "Añadir medicación" que elabora una lista visible
+			✔ Lista seleccionable de medicamentos @done (12/3/2023, 8:51:55 PM)
+			✔ Textfield con la cantidad que debe tomar ej: (media pastilla, un sobre...) @done (12/3/2023, 8:55:17 PM)
+			✔ Textfield con la frecuencia ej: (cada 8h, en las comidas, antes de dormir...) @done (12/3/2023, 9:02:42 PM)
+			✔ Textfield con duración ej: (3días, 14días...) @done (12/3/2023, 9:02:43 PM)
+			✔ Checkbox "Crónica" que si se marca se ignora el textfield de la duración y se establece como 365días. @done (12/3/2023, 9:02:45 PM)
+			✔ Botón "Añadir medicación" que elabora una lista visible @done (12/3/2023, 9:02:48 PM)
 			    Añadir medicación if:
 				Hay un medicamento seleccionado
 				Los textfield tienen menos de 100 caracteres
