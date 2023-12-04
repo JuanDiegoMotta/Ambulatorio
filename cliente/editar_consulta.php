@@ -76,6 +76,36 @@ function sintomasConsulta($id)
         echo $e->getMessage();
     }
 }
+function diagnosticoConsulta($id)
+{
+    // Creamos una instancia de BBDD
+    $bd = new BaseDeDatos();
+
+    // Intentamos conectarnos
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
+
+            // Ejecutamos consulta para conseguir los datos de la cita
+            $sql = "SELECT c.diagnostico
+            FROM CONSULTA c
+            WHERE c.id_consulta = '$id';
+            ";
+            $result = mysqli_query($conexion, $sql) or die(mysqli_error($conexion));
+            $fila = mysqli_fetch_assoc($result);
+            echo $fila['diagnostico'];
+            if ($fila['diagnostico'] == null || $fila['diagnostico'] == "") {
+                echo "<textarea name='diagnostico' id='' cols='30' rows='5' maxlength='250'> </textarea>";
+            } else {
+                echo "<textarea name='diagnostico' id='' cols='30' rows='5' maxlength='250'>" . $fila['diagnostico'] . "</textarea>";
+            }
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
 function opcionesMedicacion()
 {
     // Creamos una instancia de BBDD
@@ -330,6 +360,30 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
         echo $e->getMessage();
     }
 }
+function actualizarConsulta($id_consulta, $sintomatologia, $diagnostico){
+    $bd = new BaseDeDatos();
+    try {
+        if ($bd->conectar()) {
+            $bd->seleccionarContexto('Ambulatorio');
+            $conexion = $bd->getConexion();
+
+            // Ejecuto INSERT para agregar los datos a la tabla CONSULTA
+            $sql = "
+            UPDATE CONSULTA SET sintomatologia = '$sintomatologia', diagnostico = '$diagnostico'
+            WHERE id_consulta = '$id_consulta';
+            ";
+
+            if (mysqli_query($conexion, $sql)) {
+                echo "<p>Cita actualizada correctamente</p>";
+            } else {
+                echo "Error al agendar la cita: " . mysqli_error($conexion);
+            }
+        }
+        $bd->cerrar();
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -349,6 +403,57 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
 </head>
 
 <body>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['anadirMedicacion'])) {
+    if (isset($_POST['arrayMedicacion'])) {
+        // Guardo en variables los datos necesarios para realizar la inserción en receta
+        $id = conseguir_id_medicamento($_POST['medicamento']);
+        // --------------------------------------------------------------
+        echo "<p>El medicamento que se va a añadir tiene por id: $id</p>";
+        // ---------------------------------------------------------------
+        $cantidad = $_POST['cantidad'];
+        $frecuencia = $_POST['frecuencia'];
+        $duracion  = (isset($_POST['cronica'])) ? '365' : $_POST['duracion'];
+        // Creo un array con dichos datos
+        $medicacion = array(
+            'id_medicamento' => $id,
+            'cantidad' => $cantidad,
+            'frecuencia' => $frecuencia,
+            'duracion' => $duracion
+        );
+
+        // Inserto los datos en receta
+        anadirReceta($_POST['id_consulta'], $medicacion);
+
+        // Añado los datos a $arrayMedicacion
+        $arrayMedicacion = unserialize($_POST['arrayMedicacion']);
+        array_push($arrayMedicacion, $medicacion);
+        $arrayMedicacion = serialize($arrayMedicacion);
+    } else {
+        // La primera vez que se clique el botón anadirMedicacion el array $medicacion no estará creado
+        $id = conseguir_id_medicamento($_POST['medicamento']);
+        // --------------------------------------------------------------
+        echo "<p>El medicamento que se va a añadir tiene por id: $id</p>";
+        // ---------------------------------------------------------------
+        $cantidad = $_POST['cantidad'];
+        $frecuencia = $_POST['frecuencia'];
+        $duracion  = (isset($_POST['cronica'])) ? '365' : $_POST['duracion'];
+
+        // Guardo los datos de la medicación en un array asociativo
+        $medicacion = array(
+            'id_medicamento' => $id,
+            'cantidad' => $cantidad,
+            'frecuencia' => $frecuencia,
+            'duracion' => $duracion
+        );
+        // inserto la receta
+        anadirReceta($_POST['id_consulta'], $medicacion);
+        // Creo $arrayMedicacion
+        $arrayMedicacion = array($medicacion);
+        $arrayMedicacion = serialize($arrayMedicacion);
+    }
+}
+?>
     <div class="infoConsulta">
         <h2>Información consulta:</h2>
         <?php
@@ -358,9 +463,23 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
         }
         ?>
     </div>
+    <?php
+        // Si se ha clicado el botón actualizarConsulta
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actualizarConsulta'])){
+            // Recojo las variables para hacer update de la consulta
+            $id_consulta = $_POST['id_consulta'];
+            $sintomatologia = $_POST['sintomatologia'];
+            $diagnostico = $_POST['diagnostico'];
+            echo "<p>$id_consulta</p>";
+            echo "<p>$sintomatologia</p>";
+            echo "<p>$diagnostico</p>";
+            actualizarConsulta($id_consulta, $sintomatologia, $diagnostico);
+
+        }
+    ?>
     <div class="infoEditable">
         <h2>Información editable:</h2>
-        <form action="">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <label for="sintomatologia">Síntomas:</label>
             <?php
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -369,57 +488,24 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             }
             ?>
             <label for="diagnostico">Diagnóstico:</label>
-            <textarea name="diagnostico" id="diagnostico" cols="30" rows="5" maxlength="250"></textarea>
-        </form>
-        <?php
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['anadirMedicacion'])) {
-            if (isset($_POST['arrayMedicacion'])) {
-                // Guardo en variables los datos necesarios para realizar la inserción en receta
-                $id = conseguir_id_medicamento($_POST['medicamento']);
-                // --------------------------------------------------------------
-                echo "<p>El medicamento que se va a añadir tiene por id: $id</p>";
-                // ---------------------------------------------------------------
-                $cantidad = $_POST['cantidad'];
-                $frecuencia = $_POST['frecuencia'];
-                $duracion  = (isset($_POST['cronica'])) ? '365' : $_POST['duracion'];
-                // Creo un array con dichos datos
-                $medicacion = array(
-                    'id_medicamento' => $id,
-                    'cantidad' => $cantidad,
-                    'frecuencia' => $frecuencia,
-                    'duracion' => $duracion
-                );
-
-                // Inserto los datos en receta
-                anadirReceta($_POST['id_consulta'], $medicacion);
-
-                // Añado los datos a $arrayMedicacion
-                $arrayMedicacion = unserialize($_POST['arrayMedicacion']);
-                array_push($arrayMedicacion, $medicacion);
-            } else {
-                // La primera vez que se clique el botón anadirMedicacion el array $medicacion no estará creado
-                $id = conseguir_id_medicamento($_POST['medicamento']);
-                // --------------------------------------------------------------
-                echo "<p>El medicamento que se va a añadir tiene por id: $id</p>";
-                // ---------------------------------------------------------------
-                $cantidad = $_POST['cantidad'];
-                $frecuencia = $_POST['frecuencia'];
-                $duracion  = (isset($_POST['cronica'])) ? '365' : $_POST['duracion'];
-
-                // Guardo los datos de la medicación en un array asociativo
-                $medicacion = array(
-                    'id_medicamento' => $id,
-                    'cantidad' => $cantidad,
-                    'frecuencia' => $frecuencia,
-                    'duracion' => $duracion
-                );
-                // inserto la receta
-                anadirReceta($_POST['id_consulta'], $medicacion);
-                // Creo $arrayMedicacion
-                $arrayMedicacion = array($medicacion);
+            <?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id_consulta = $_POST['id_consulta'];
+                diagnosticoConsulta($id_consulta);
             }
-        }
-        ?>
+            ?>
+            <input type="hidden" name="id_consulta" value="<?php echo $_POST['id_consulta']; ?>">
+            <?php
+            if (isset($arrayMedicacion) || isset($_POST['arrayMedicacion'])) {
+
+                $arrayMedicacion = (isset($arrayMedicacion)) ? $arrayMedicacion : $_POST['arrayMedicacion'];
+                echo "<p>Se comprueba que existe arrayMedicacion y se pasa por input:hidden</p>";
+                // si existe un array con las medicaciones, lo paso a string y lo envío por un input:hidden
+                echo "<input type='hidden' name='arrayMedicacion' value='$arrayMedicacion'>";
+            } //AÑADIR input:hidden con $arrayMedicacion si se clica el botón agendar
+            ?>
+            <button type="submit" name="actualizarConsulta">Actualizar consulta</button>
+        </form>
     </div>
     <div class="medicacion">
         <h2>Medicación:</h2>
@@ -443,18 +529,20 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             <input type="checkbox" name="cronica" id="cronica_v">
             <input type="hidden" name="id_consulta" value="<?php echo $_POST['id_consulta']; ?>">
             <?php
-            if (isset($arrayMedicacion)) {
+            if (isset($arrayMedicacion) || isset($_POST['arrayMedicacion'])) {
+
+                $arrayMedicacion = (isset($arrayMedicacion)) ? $arrayMedicacion : $_POST['arrayMedicacion'];
                 echo "<p>Se comprueba que existe arrayMedicacion y se pasa por input:hidden</p>";
                 // si existe un array con las medicaciones, lo paso a string y lo envío por un input:hidden
-                $arrayMedicacion = serialize($arrayMedicacion);
                 echo "<input type='hidden' name='arrayMedicacion' value='$arrayMedicacion'>";
-            }
+            } //AÑADIR input:hidden con $arrayMedicacion si se clica el botón agendar
             ?>
             <button type="submit" name="anadirMedicacion">Añadir medicación</button>
         </form>
         <?php
-        if (isset($arrayMedicacion)) {
-            $arrayMedicacion = unserialize($arrayMedicacion);
+        if (isset($arrayMedicacion) || isset($_POST['arrayMedicacion'])) {
+            echo "<p>TABLIFICAR ARRAY AL CLICAR</p>";
+            $arrayMedicacion = (isset($arrayMedicacion)) ? unserialize($arrayMedicacion) : unserialize($_POST['arrayMedicacion']);
             tablificarArray($arrayMedicacion);
         }
         ?>
@@ -475,6 +563,14 @@ function registrarCita($id_medico, $id_paciente, $fecha_consulta, $sintomatologi
             <input type="date" name="date" id="date">
             <label for="sintomatologia">Introduce los síntomas (opcional):</label>
             <textarea name="sintomatologia" id="" cols="30" rows="5" maxlength="250"></textarea>
+            <?php
+            if (isset($arrayMedicacion) || isset($_POST['arrayMedicacion'])) {
+                echo "<p>Se comprueba que existe arrayMedicacion y se pasa por input:hidden</p>";
+                // si existe un array con las medicaciones, lo paso a string y lo envío por un input:hidden
+                $arrayMedicacion = serialize($arrayMedicacion);
+                echo "<input type='hidden' name='arrayMedicacion' value='$arrayMedicacion'>";
+            }
+            ?>
             <input type="hidden" name="id_consulta" value="<?php echo $_POST['id_consulta']; ?>">
             <button type="submit" name="agendar">Agendar</button>
         </form>
